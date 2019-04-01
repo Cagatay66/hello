@@ -41,6 +41,7 @@ SFE_BMP180 barometre; //Barometre
 File dosya;
 Parasut para1(1,1000,0);
 Parasut para2(2,500,300);
+int durum = 0;
 
 const long YINELEME_HIZI = 100; //Seri haberleşme yenileme hızı
 long yinelemeZamani; 
@@ -96,11 +97,13 @@ void loop() {
   if(!zil&&azaliyor&&filtreliIrtifa<maksIrtifa-1){
     para1.start();
     zil=1;
+    durum=1;
     }
 
   if(!parasut&&zil&&filtreliIrtifa<4.0) {
     para2.start();
     parasut=1;
+    durum=2;
     }
 
   if(filtreliIrtifa<eskiIrtifa) {
@@ -116,12 +119,16 @@ void loop() {
     Serial.print(irtifa,6);
     Serial.print(",");
     Serial.print(filtreliIrtifa,6);
+    Serial.print(",");
+    Serial.print(durum);
     Serial.println();
     dosya.print(millis());
     dosya.print(",");
     dosya.print(irtifa,6);
     dosya.print(",");
     dosya.print(filtreliIrtifa,6);
+    dosya.print(",");
+    dosya.print(durum);
     dosya.println();
     yinelemeZamani=millis()+YINELEME_HIZI;
     dosya.close();
